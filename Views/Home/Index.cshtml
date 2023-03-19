@@ -1,0 +1,270 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<link href="~/css/topcv.css" rel="stylesheet" />
+<div id="main">
+    <div class="container">
+        <div class="col-md-8">
+            <div class="box-white">
+                <h1 class="title">Công cụ tính lương Gross sang Net / Net sang Gross chuẩn 2023</h1>
+                <p class="text-muted-content" style="margin-bottom: 4px;">
+                    Áp dụng mức giảm trừ gia cảnh mới nhất 11 triệu đồng/tháng (132 triệu đồng/năm) với nguời nộp thuế và 4,4 triệu đồng/tháng với mỗi người phụ thuộc (Theo Nghị quyết số 954/2020/UBTVQH14)       
+                    Áp dụng mức lương tối thiểu vùng mới nhất có hiệu lực từ ngày 01/07/2022 (Theo điều 3, Nghị định 38/2022/NĐ-CP)
+                </p>
+                <p class="text-muted-content">
+                    Áp dụng mức lương <a href="#" class="text-highlight" v-on:click.prevent="showModalSalaryDetail">tối thiểu vùng</a> mới nhất có hiệu lực từ ngày 01/07/2022 (Theo điều 3, Nghị định 38/2022/NĐ-CP)
+                </p>
+                <form action="" id="salary-from">
+                    <div id="salary-calculate-options" class="mb-12px">
+<div class="salary-calculate">
+<div class="d-flex mb-1">
+<strong class="mr-12">Áp dụng quy định:</strong>
+<span class="w-50 flex-1">
+<label style="cursor: pointer;" class="custom-text-blue radio-inline" v-on:mouseover="mouseoverOption(1)" v-on:mouseleave="mouseleaveOption(1)">
+<input v-on:change="getSalaryOptionData" id="salary-option-1" type="radio" name="salary_option" value="1" style="margin-right: 5px;" checked> Từ 01/07/2022
+<span class="icon-radio"></span>
+</label>
+<span class="custom-font-italic custom-font-size-09-em" style="color: red">(Mới nhất)</span>
+<a class="hover-gray" href="#" data-toggle="modal" data-target="#new_option_detail_modal">
+<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"></i>
+</a>
+</span>
+<span class="w-50 flex-2">
+<label style="cursor: pointer;" class=" radio-inline" v-on:mouseover="mouseoverOption(2)" v-on:mouseleave="mouseleaveOption(2)">
+<input v-on:change="getSalaryOptionData" id="salary-option-2" type="radio" name="salary_option" value="2" style="margin-right: 5px;"> Từ 01/07/2020 - 30/06/2022
+<span class="icon-radio"></span>
+</label>
+<a class="hover-gray" href="#" data-toggle="modal" data-target="#old_option_detail_modal">
+<i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Xem chi tiết"></i>
+</a>
+</span>
+</div>
+<div class="custom-font-italic d-flex">
+<span class="mr-auto">
+<p>Lương cơ sở:</p>
+<span class="number-yellow" v-cloak></span>
+</span>
+<span class="mx-auto">
+<p>Giảm trừ gia cảnh bản thân:</p>
+<span class="number-yellow" v-cloak></span>
+</span>
+<span class="ml-auto">
+ <p>Người phụ thuộc:</p>
+<span class="number-yellow" v-cloak></span>
+</span>
+</div>
+</div>
+</div>
+<div class="input-salary mb-12px">
+<div class="mr-auto mb-8">
+<label for="" class="mb-12px other">Thu Nhập:</label>
+<div class="input-data">
+<span class="icon">
+<i class="fa-solid fa-money-bill"></i>
+</span>
+<input class="border-hover" type="text" v-on:keyup.prevent="formatCurrency('luong')" name="luong" value="" placeholder="VD: 10,000,000">
+<span class="caption">(VNĐ)</span>
+</div>
+</div>
+<div class="bao-hiem d-flex items-center mb-8">
+<label for="" class="mr-12px mb-0">Mức lương đóng bảo hiểm:</label>
+<div class="d-flex items-center">
+<label class="radio-inline w-45 mb-0">
+<input type="radio" name="dongBaoHiem" value="trenChinhThuc" checked> <span>Trên lương chính thức</span>
+<span class="icon-radio"></span>
+</label>
+<div class="d-flex w-45 mr-auto align-items-center">
+<label class="radio-inline other">
+<input type="radio" name="dongBaoHiem" value="khac">
+<span class="icon-radio"></span>
+<span>Khác:</span>
+</label>
+<div class="input-data">
+<span class="icon text-muted">
+<i class="fa-solid fa-money-bill"></i>
+</span>
+<input class="border-hover" v-on:keyup.prevent="formatCurrency('luongDongBaoHiem')" type="text" name="luongDongBaoHiem" disabled>
+<span class="caption">(VNĐ)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="region mb-8">
+<p class="mb-12px mr-2 d-inline"><strong>Vùng: </strong> <a href="#" class="small" v-on:click.prevent="showModalSalaryDetail" style="color: red">(Giải thích)</a></p>
+<div class="label-input">
+<label class="radio-inline">
+<input type="radio" name="vung" value="1" checked> I
+<span class="icon-radio"></span>
+</label>
+<label class="radio-inline">
+<input type="radio" name="vung" value="2"> II
+<span class="icon-radio"></span>
+</label>
+<label class="radio-inline">
+<input type="radio" name="vung" value="3"> III
+<span class="icon-radio"></span>
+</label>
+<label class="radio-inline">
+<input type="radio" name="vung" value="4"> IV
+<span class="icon-radio"></span>
+</label>
+</div>
+</div>
+<div class="d-flex">
+ <div class="mr-auto">
+<label for="" class="mb-12px other">Số người phụ thuộc:</label>
+<div class="input-data">
+<span class="icon">
+<i class="fa-solid fa-user-group"></i>
+</span>
+<input class="border-hover" type="text" name="nguoiPhuThuoc" value="" placeholder="0">
+<span class="caption">(Người)</span>
+</div>
+</div>
+</div>
+</div>
+</form>
+<div class="text-center" style="margin-top: 20px">
+<a href="#" class="btn btn-topcv-primary btn-primary-hover" v-on:click.prevent="grossToNet">GROSS → NET</a>
+<a href="#" class="btn btn-topcv-primary btn-secondary-hover" v-on:click.prevent="netToGross">NET → GROSS</a>
+</div>
+<div v-if="salaryData" v-cloak>
+<table class="gross-net-table table" style="margin-top: 40px;">
+<tr class="rownote">
+<th>Lương Gross</th>
+<th>Bảo hiểm</th>
+<th>Thuế TNCN</th>
+<th>Lương Net</th>
+</tr>
+<tr>
+<td>{{ formatNumber(salaryData.luongGross) }}</td>
+<td>- {{ formatNumber(salaryData.tongChiPhiBaoHiem) }}</td>
+<td>- {{ formatNumber(salaryData.thueThuNhapCaNhan) }}</td>
+<td>{{ formatNumber(salaryData.luongNet) }}</td>
+</tr>
+</table>
+</div>
+<div class="text-center" style="margin-top: 40px" v-if="salaryData" v-cloak>
+<p class="text-left text-highlight bold">Diễn giải chi tiết (VNĐ)</p>
+<table class="gross-net-table table">
+<tr class="rownote">
+<th>Lương GROSS</th>
+<td>{{ formatNumber(salaryData.luongGross) }}</td>
+</tr>
+<tr>
+<th>Bảo hiểm xã hội (8%)</th>
+<td>- {{ formatNumber(salaryData.baoHiemXaHoi) }}</td>
+</tr>
+<tr>
+<th>Bảo hiểm y tế (1.5%)</th>
+<td>- {{ formatNumber(salaryData.baoHiemYTe) }}</td>
+</tr>
+<tr>
+<th>Bảo hiểm thất nghiệp (1%)</th>
+<td>- {{ formatNumber(salaryData.baoHiemThatNghiep) }}</td>
+</tr>
+<tr class="rownote">
+<th>Thu nhập trước thuế</th>
+<td>{{ formatNumber(salaryData.thuNhapTruocThue) }}</td>
+</tr>
+<tr>
+<th>Giảm trừ gia cảnh bản thân</th>
+<td>- {{ formatNumber(salaryData.giamTruGiaCanh) }}</td>
+</tr>
+<tr>
+<th>Giảm trừ gia cảnh người phụ thuộc</th>
+<td>- {{ formatNumber(salaryData.giamTruNguoiPhuThuoc) }}</td>
+</tr>
+<tr class="rownote">
+<th>Thu nhập chịu thuế</th>
+<td>{{ formatNumber(salaryData.thuNhapChiuThue) }}</td>
+</tr>
+<tr>
+<th>Thuế thu nhập cá nhân(*)</th>
+<td>- {{ formatNumber(salaryData.thueThuNhapCaNhan) }}</td>
+</tr>
+<tr class="rownote">
+<td>
+<b>Lương NET</b><br />
+(Thu nhập trước thuế - Thuế thu nhập cá nhân.)
+</td>
+<td>{{ formatNumber(salaryData.luongNet) }}</td>
+</tr>
+</table>
+<p class="text-left text-highlight bold">(*) Chi tiết thuế thu nhập cá nhân (VNĐ)</p>
+<table class="gross-net-table table">
+<tr class="rownote">
+<th>Mức chịu thuế</th>
+<th>Thuế suất</th>
+<th>Tiền nộp</th>
+</tr>
+<tr>
+<td>Đến 5 triệu VNĐ</td>
+<td>5%</td>
+<td>{{ formatNumber(salaryData.thue_0_5) }}</td>
+</tr>
+<tr>
+<td>Trên 5 triệu VNĐ đến 10 triệu VNĐ</td>
+<td>10% </td>
+<td>{{ formatNumber(salaryData.thue_5_10) }}</td>
+</tr>
+<tr>
+<td>Trên 10 triệu VNĐ đến 18 triệu VNĐ</td>
+<td>15%</td>
+<td>{{ formatNumber(salaryData.thue_10_18) }}</td>
+</tr>
+<tr>
+<td>Trên 18 triệu VNĐ đến 32 triệu VNĐ</td>
+<td>20%</td>
+<td>{{ formatNumber(salaryData.thue_18_32) }}</td>
+</tr>
+<tr>
+<td>Trên 32 triệu VNĐ đến 52 triệu VNĐ</td>
+<td>25%</td>
+<td>{{ formatNumber(salaryData.thue_32_52) }}</td>
+</tr>
+<tr>
+<td>Trên 52 triệu VNĐ đến 80 triệu VNĐ</td>
+<td>30%</td>
+<td>{{ formatNumber(salaryData.thue_52_80) }}</td>
+</tr>
+<tr>
+<td>Trên 80 triệu VNĐ</td>
+<td>35%</td>
+<td>{{ formatNumber(salaryData.thue_tren_80) }}</td>
+</tr>
+</table>
+<p class="text-left text-highlight bold">Người sử dụng lao động trả (VNĐ)</p>
+<table class="gross-net-table table">
+<tr>
+<th>Lương GROSS</th>
+<td>{{ formatNumber(salaryData.luongGross) }}</td>
+</tr>
+<tr>
+<th>Bảo hiểm xã hội (17%)</th>
+<td>{{ formatNumber(salaryData.baoHiemXaHoiDoanhNghiepDong) }}</td>
+</tr>
+<tr>
+<th>Bảo hiểm Tai nạn lao động - Bệnh nghề nghiệp (0.5%)</th>
+<td>{{ formatNumber(salaryData.baoHiemTaiNanLaoDongDoanhNghiepDong) }}</td>
+</tr>
+<tr>
+<th>Bảo hiểm y tế (3%)</th>
+<td>{{ formatNumber(salaryData.baoHiemYTeDoanhNghiepDong) }}</td>
+</tr>
+<tr>
+<th>Bảo hiểm thất nghiệp (1%)</th>
+<td>{{ formatNumber(salaryData.baoHiemThatNghiepDoanhNghiepDong) }}</td>
+</tr>
+<tr class="rownote">
+<th>Tổng cộng</th>
+<td>{{ formatNumber(salaryData.tongChiPhiDoanhNghiepPhaiTra) }}</td>
+</tr>
+</table>
+</div>
+</div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
